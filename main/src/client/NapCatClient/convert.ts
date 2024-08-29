@@ -102,7 +102,7 @@ export const napCatReceiveToMessageElem = (data: Receive[keyof Receive]): Messag
       const qqNum = Number(data.data.qq);
       return {
         type: data.type,
-        qq: isNaN(qqNum) ? data.data.qq : qqNum,
+        qq: isNaN(qqNum) ? data.data.qq as any : qqNum,
       };
     case 'file':
       return {
@@ -111,7 +111,7 @@ export const napCatReceiveToMessageElem = (data: Receive[keyof Receive]): Messag
         duration: 0,
         name: data.data.file,
         fid: data.data.file_id,
-        size: data.data.file_size,
+        size: Number(data.data.file_size),
         md5: '',
       };
     case 'video':
@@ -124,7 +124,7 @@ export const napCatReceiveToMessageElem = (data: Receive[keyof Receive]): Messag
     case 'dice':
     case 'rps':
       return {
-        id: data.data.result,
+        id: Number(data.data.result),
         type: data.type,
       };
     case 'forward':
@@ -135,9 +135,6 @@ export const napCatReceiveToMessageElem = (data: Receive[keyof Receive]): Messag
       };
     case 'reply':
       throw new Error('不出意外这个应该提前处理');
-    case 'music':
-    case 'customMusic':
-      throw new Error('这个真的能被收到吗');
     default:
       throw new Error('不支持此元素');
   }

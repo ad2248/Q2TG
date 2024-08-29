@@ -119,8 +119,8 @@ export class NapCatClient extends QQClient {
       } : undefined,
       undefined,
       data.message_id.toString(),
-      replyMessage?.sender.user_id === this.uin || message.some(it => it.type === 'at' && it.data.qq === this.uin),
-      message.some(it => it.type === 'at' && (it.data.qq === 0 || it.data.qq === 'all')),
+      replyMessage?.sender.user_id === this.uin || message.some(it => it.type === 'at' && it.data.qq.toString() === this.uin.toString()),
+      message.some(it => it.type === 'at' && (it.data.qq.toString() === '0' || !it.data.qq || it.data.qq === 'all')),
     );
     for (const handler of this.onMessageHandlers) {
       if (await handler(event)) {
@@ -153,7 +153,7 @@ export class NapCatClient extends QQClient {
 
   private async handlePoke(data: WSReceiveHandler['notice.notify.poke.group'] | WSReceiveHandler['notice.notify.poke.friend']) {
     const chat = 'group_id' in data ? await this.pickGroup(data.group_id) : await this.pickFriend(data.user_id);
-    const operator = 'group_id' in data ? data.user_id : data.sender_id;
+    const operator = 'sender_id' in data ? data.sender_id as number : data.user_id;
     const event = new PokeEvent(chat, operator, data.target_id, '戳了戳', undefined);
     await this.callHandlers(this.onPokeHandlers, event);
   }
@@ -169,8 +169,8 @@ export class NapCatClient extends QQClient {
     await this.callHandlers(this.onGroupInviteHandlers, event as NapCatGroupInviteEvent);
   }
 
-  public async getMessage(messageId: number) {
-    return await this.callApi('get_msg', { message_id: messageId });
+  public async getMessage(messageId: number | string) {
+    return await this.callApi('get_msg', { message_id: messageId as any });
   }
 
   public async refreshSelf() {

@@ -62,7 +62,7 @@ export abstract class NapCatEntity implements QQEntity {
       message.push({
         type: 'reply',
         data: {
-          id: source.seq,
+          id: source.seq.toString(),
         },
       });
     }

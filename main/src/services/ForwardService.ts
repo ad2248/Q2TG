@@ -16,6 +16,7 @@ import { Button } from 'telegram/tl/custom/button';
 import { SendMessageParams } from 'telegram/client/messages';
 import { Api } from 'telegram';
 import { file as createTempFileBase, FileResult } from 'tmp-promise';
+// @ts-ignore
 import eviltransform from 'eviltransform';
 import silk from '../encoding/silk';
 import axios from 'axios';
