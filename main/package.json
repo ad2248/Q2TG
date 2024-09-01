@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@bogeychan/elysia-polyfills": "^0.6.4",
-    "@icqqjs/icqq": "https://0w.al/wmkPhAaNa6BKm4PSTZnaM25C.tgz",
+    "@icqqjs/icqq": "^1.2.6",
     "@prisma/client": "5.19.0",
     "dockerode": "^4.0.2",
     "prisma": "5.19.0",
