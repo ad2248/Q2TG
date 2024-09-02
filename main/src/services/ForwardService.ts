@@ -479,7 +479,7 @@ export default class ForwardService {
       }
 
       let richHeaderUsed = false;
-      if (!((pair.flags | this.instance.flags) & flags.DISABLE_RICH_HEADER) || !env.WEB_ENDPOINT) {
+      if (((pair.flags | this.instance.flags) & flags.DISABLE_RICH_HEADER) || !env.WEB_ENDPOINT) {
         messageHeaderWithLink = messageHeader;
       }
       // 发送消息
