@@ -37,11 +37,15 @@ export default new Elysia()
           birthday: [info.birthday_year, info.birthday_month, info.birthday_day],
           email: info.eMail,
           nickname: info.nickname,
+          // @ts-ignore
           city: info.city || info.detail?.commonExt?.city,
           QID: info.qid,
+          // @ts-ignore
           country: info.country || info.detail?.commonExt?.country,
+          // @ts-ignore
           province: info.province || info.detail?.commonExt?.province,
           signature: '',
+          // @ts-ignore
           regTimestamp: info.regTime || info.detail?.commonExt?.regTime,
         };
       }
