@@ -40,6 +40,7 @@ import { ForwardMessage, Group, MessageEvent, QQClient, Sendable, SendableElem }
 import posthog from '../models/posthog';
 import { NapCatClient } from '../client/NapCatClient';
 import fsP from 'fs/promises';
+import regExps from '../constants/regExps';
 
 const NOT_CHAINABLE_ELEMENTS = ['flash', 'record', 'video', 'location', 'share', 'json', 'xml', 'poke'];
 const IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/apng', 'image/webp', 'image/gif', 'image/bmp', 'image/tiff', 'image/x-icon', 'image/avif', 'image/heic', 'image/heif'];
@@ -119,7 +120,7 @@ export default class ForwardService {
         replyTo = 0,
         forceDocument = false,
         isContainAt = false;
-      let messageHeader = '', sender = '';
+      let messageHeader = '', messageHeaderWithLink = '', sender = '';
       if (!event.dm) {
         // 产生头部，这和工作模式没有关系
         sender = event.from.name;
@@ -128,8 +129,10 @@ export default class ForwardService {
         }
         if ((pair.flags | this.instance.flags) & flags.COLOR_EMOJI_PREFIX) {
           messageHeader += emoji.color(event.from.id);
+          messageHeaderWithLink += emoji.color(event.from.id);
         }
         messageHeader += `<b>${helper.htmlEscape(sender)}</b>: `;
+        messageHeaderWithLink += `<b><a href="${helper.generateRichHeaderUrl(pair.apiKey, event.from.id, messageHeader)}">${helper.htmlEscape(sender)}</b></a>: `;
       }
       const useSticker = (file: FileLike) => {
         files.push(file);
@@ -140,7 +143,7 @@ export default class ForwardService {
           else {
             buttons.push(Button.inline(`${sender}:`));
           }
-          messageHeader = '';
+          messageHeader = messageHeaderWithLink = '';
         }
       };
       const useForward = async (resId: string, fileName?: string, messages?: ForwardMessage[]) => {
@@ -389,7 +392,7 @@ export default class ForwardService {
                   venueType: 'Q2TG',
                 }));
                 // 电脑 tg 不会显示地图的 caption
-                messageHeader = '';
+                messageHeader = messageHeaderWithLink = '';
                 // 这里用火星坐标
                 message = `<a href="https://uri.amap.com/marker?position=${result.lng},${result.lat}">在高德地图中查看</a>`;
                 break;
@@ -476,8 +479,12 @@ export default class ForwardService {
       }
 
       let richHeaderUsed = false;
+      if (!((pair.flags | this.instance.flags) & flags.NO_RICH_HEADER) || !env.WEB_ENDPOINT) {
+        messageHeaderWithLink = messageHeader;
+      }
       // 发送消息
       messageToSend.forceDocument = forceDocument as any; // 恼
+      messageToSend.linkPreview = false;
       if (files.length === 1) {
         messageToSend.file = files[0];
       }
@@ -499,9 +506,22 @@ export default class ForwardService {
         });
         messageToSend.linkPreview = { showAboveText: true };
       }
+      else if (!isContainAt && isContainsUrl(message)) {
+        // 手动找出需要 preview 的 url，防止 preview richHeader 的 url
+        const urls = message.match(regExps.url);
+        if (urls?.length) {
+          const url = urls[0];
+          messageToSend.file = new Api.InputMediaWebPage({
+            url,
+            forceSmallMedia: true,
+            optional: true,
+          });
+          messageToSend.linkPreview = { showAboveText: false };
+        }
+      }
 
       if (!richHeaderUsed) {
-        message = messageHeader + (message && messageHeader ? '\n' : '') + message;
+        message = messageHeaderWithLink + (message && messageHeaderWithLink ? '\n' : '') + message;
       }
       message && (messageToSend.message = message);
 
@@ -518,7 +538,8 @@ export default class ForwardService {
           this.log.warn('Rich Header 发送错误', messageToSend.file, e);
           posthog.capture('Rich Header 发送错误', { error: e, attach: messageToSend.file });
           delete messageToSend.file;
-          messageToSend.linkPreview = false;
+          delete messageToSend.linkPreview;
+          // 这里可能是因为 url 本身不合法之类的问题，所以这里发送不带链接的 header
           message = messageHeader + (message && messageHeader ? '\n' : '') + message;
           message && (messageToSend.message = message);
           tgMessage = await pair.tg.sendMessage(messageToSend);
@@ -538,7 +559,7 @@ export default class ForwardService {
           // 没有正常获取的话，就加上原先的头部
           this.log.warn('Rich Header 回测错误', messageToSend.file);
           await tgMessage.edit({
-            text: messageHeader + (message && messageHeader ? '\n' : '') + message,
+            text: messageHeaderWithLink + (message && messageHeaderWithLink ? '\n' : '') + message,
           });
         }, 3000);
       }
