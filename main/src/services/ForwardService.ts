@@ -118,7 +118,7 @@ export default class ForwardService {
         buttons: ButtonLike[] = [],
         replyTo = 0,
         forceDocument = false,
-        linkPreview = true;
+        isContainAt = false;
       let messageHeader = '', sender = '';
       if (!event.dm) {
         // 产生头部，这和工作模式没有关系
@@ -224,7 +224,7 @@ export default class ForwardService {
             }
             if (env.WEB_ENDPOINT && typeof elem.qq === 'number') {
               message += `<a href="${helper.generateRichHeaderUrl(pair.apiKey, elem.qq)}">[<i>${helper.htmlEscape(elem.text)}</i>]</a>`;
-              linkPreview = false;
+              isContainAt = true;
               break;
             }
           }
@@ -478,7 +478,6 @@ export default class ForwardService {
       let richHeaderUsed = false;
       // 发送消息
       messageToSend.forceDocument = forceDocument as any; // 恼
-      messageToSend.linkPreview = linkPreview;
       if (files.length === 1) {
         messageToSend.file = files[0];
       }
@@ -487,7 +486,7 @@ export default class ForwardService {
       }
       else if (!event.dm && !((pair.flags | this.instance.flags) & flags.NO_RICH_HEADER) && env.WEB_ENDPOINT
         // 当消息包含链接时不显示 RICH HEADER
-        && !isContainsUrl(message)) {
+        && (isContainAt || !isContainsUrl(message))) {
         // 没有文件时才能显示链接预览
         richHeaderUsed = true;
         // https://github.com/tdlib/td/blob/437c2d0c6e0ad104022d5ad86ddc8aedc41cb7a8/td/telegram/MessageContent.cpp#L2575
@@ -519,7 +518,7 @@ export default class ForwardService {
           this.log.warn('Rich Header 发送错误', messageToSend.file, e);
           posthog.capture('Rich Header 发送错误', { error: e, attach: messageToSend.file });
           delete messageToSend.file;
-          delete messageToSend.linkPreview;
+          messageToSend.linkPreview = false;
           message = messageHeader + (message && messageHeader ? '\n' : '') + message;
           message && (messageToSend.message = message);
           tgMessage = await pair.tg.sendMessage(messageToSend);
