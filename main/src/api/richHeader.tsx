@@ -37,12 +37,12 @@ export default new Elysia()
           birthday: [info.birthday_year, info.birthday_month, info.birthday_day],
           email: info.eMail,
           nickname: info.nickname,
-          city: info.city,
+          city: info.city || info.detail?.commonExt?.city,
           QID: info.qid,
-          country: info.country,
-          province: info.province,
+          country: info.country || info.detail?.commonExt?.country,
+          province: info.province || info.detail?.commonExt?.province,
           signature: '',
-          regTimestamp: info.regTime,
+          regTimestamp: info.regTime || info.detail?.commonExt?.regTime,
         };
       }
       else {
@@ -51,7 +51,7 @@ export default new Elysia()
 
       const now = new Date();
       const location = [profile.country, profile.province, profile.city].join(' ').trim();
-      const birthday = (profile.birthday || []).some(it => it) && profile.birthday.join('/');
+      const birthday = (profile.birthday || []).some(it => it) ? profile.birthday.join('/') : '';
 
       return <html lang="zh">
       <head>

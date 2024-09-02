@@ -41,10 +41,11 @@ export class NapCatClient extends QQClient {
   }
 
   private readonly echoMap = new Map<string, { resolve: (result: any) => void; reject: (result: any) => void }>();
+  private echoSeq = 0;
 
   public async callApi<T extends keyof WSSendReturn>(action: T, params?: WSSendParam[T]): Promise<WSSendReturn[T]> {
     return new Promise<WSSendReturn[T]>((resolve, reject) => {
-      const echo = `${new Date().getTime()}${random.int(100000, 999999)}`;
+      const echo = `${new Date().getTime()}-${this.echoSeq++}-${random.int(100000, 999999)}`;
       this.echoMap.set(echo, { resolve, reject });
       this.ws.send(JSON.stringify({ action, params, echo }));
       this.logger.debug('send', JSON.stringify({ action, params, echo }));
