@@ -111,7 +111,7 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2
       file-type:
-        specifier: ^19.3.0
+        specifier: 19.3.0
         version: 19.3.0
       fluent-ffmpeg:
         specifier: ^2.1.3
