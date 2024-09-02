@@ -72,7 +72,7 @@ COPY --from=build-front /app/ui/dist /app/front
 ENV UI_PATH=/app/front
 
 ENV DATA_DIR=/app/data
-ENV CACHE_DIR=/root/.config/QQ/NapCat/temp
+ENV CACHE_DIR=/app/.config/QQ/NapCat/temp
 
 ARG REPO
 ARG REF

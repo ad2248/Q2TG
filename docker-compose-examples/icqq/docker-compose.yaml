@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - postgresql:/var/lib/postgresql/data
-      
+
   tunnel: #如果没有使用 Cloudflare Tunnel 暴露内网端口，可以删除这一小节
     container_name: cloudflared-tunnel
     image: cloudflare/cloudflared
@@ -45,7 +45,7 @@ services:
     volumes:
       - q2tg:/app/data
       # 下面这行是固定的，和你用不用 NapCat 没关系，不要动
-      - cache:/root/.config/QQ/NapCat/temp
+      - cache:/app/.config/QQ/NapCat/temp
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - TG_API_ID=
