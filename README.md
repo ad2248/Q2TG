@@ -17,27 +17,22 @@ v2.x 及以上版本同时需要机器人账号以及登录 Telegram 个人账�
 - [x] 图片（双向）
   - [x] GIF
   - [x] 闪照
-
     闪照每个 TG 用户也只能查看 5 秒
 - [x] 图文混排消息（双向）
 - [x] 大表情（双向）
-  - [x] TG 中的动态 Sticker
-
+  - [x] TG 中的动态 Sticker<br>
     目前是[转换成 GIF](https://github.com/ed-asriyan/tgs-to-gif) 发送的，并且可能有些[问题](https://github.com/ed-asriyan/tgs-to-gif/issues/13#issuecomment-633244547)
 - [x] 视频（双向）
 - [x] 语音（双向）
 - [x] 小表情（可显示为文字）
 - [x] 链接（双向）
-- [x] JSON/XML 卡片
-
+- [x] JSON/XML 卡片<br>
   （包括部分转化为小程序的链接）
 - [x] 位置（TG -> QQ）
 - [x] 群公告
 - [x] 回复（双平台原生回复）
-- [x] 文件
-
-  QQ -> TG 按需获取下载地址
-
+- [x] 文件<br>
+  QQ -> TG 按需获取下载地址<br>
   TG -> QQ 将自动转发 20M 以下的小文件
 - [x] 转发多条消息记录
 - [x] TG 编辑消息（撤回再重发）
