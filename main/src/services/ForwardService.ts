@@ -137,7 +137,7 @@ export default class ForwardService {
       const useSticker = (file: FileLike) => {
         files.push(file);
         if (!event.dm) {
-          if (!((pair.flags | this.instance.flags) & flags.NO_RICH_HEADER) && env.WEB_ENDPOINT) {
+          if (!((pair.flags | this.instance.flags) & flags.DISABLE_RICH_HEADER) && env.WEB_ENDPOINT) {
             buttons.push(Button.url(`${sender}:`, helper.generateRichHeaderUrl(pair.apiKey, event.from.id, messageHeader)));
           }
           else {
@@ -189,7 +189,7 @@ export default class ForwardService {
         }
       };
       messageElemLoop: for (let elem of event.message) {
-        if (elem.type === 'flash' && (pair.flags | this.instance.flags) & flags.NO_FLASH_PIC) {
+        if (elem.type === 'flash' && (pair.flags | this.instance.flags) & flags.DISABLE_FLASH_PIC) {
           message += '<i>[闪照]</i>';
           elem = {
             ...elem,
@@ -479,7 +479,7 @@ export default class ForwardService {
       }
 
       let richHeaderUsed = false;
-      if (!((pair.flags | this.instance.flags) & flags.NO_RICH_HEADER) || !env.WEB_ENDPOINT) {
+      if (!((pair.flags | this.instance.flags) & flags.DISABLE_RICH_HEADER) || !env.WEB_ENDPOINT) {
         messageHeaderWithLink = messageHeader;
       }
       // 发送消息
@@ -491,7 +491,7 @@ export default class ForwardService {
       else if (files.length) {
         messageToSend.file = files;
       }
-      else if (!event.dm && !((pair.flags | this.instance.flags) & flags.NO_RICH_HEADER) && env.WEB_ENDPOINT
+      else if (!event.dm && !((pair.flags | this.instance.flags) & flags.DISABLE_RICH_HEADER) && env.WEB_ENDPOINT
         // 当消息包含链接时不显示 RICH HEADER
         && (isContainAt || !isContainsUrl(message))) {
         // 没有文件时才能显示链接预览

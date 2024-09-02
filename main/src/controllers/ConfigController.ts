@@ -120,7 +120,7 @@ export default class ConfigController {
 
   private handleQqMessage = async (message: MessageEvent) => {
     if (!message.dm || this.instance.workMode === 'group') return false;
-    if (this.instance.flags & flags.NO_AUTO_CREATE_PM) return false;
+    if (this.instance.flags & flags.DISABLE_AUTO_CREATE_PM) return false;
     const chat = message.chat as Friend;
     const pair = this.instance.forwardPairs.find(chat);
     if (pair) return false;

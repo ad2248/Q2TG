@@ -164,7 +164,7 @@ export default class DeleteMessageService {
       });
       if (!message) return;
       if (this.lock(`tg-${pair.tgId}-${message.tgMsgId}`)) return;
-      if ((pair.flags | this.instance.flags) & flags.NO_DELETE_MESSAGE) {
+      if ((pair.flags | this.instance.flags) & flags.DISABLE_DELETE_MESSAGE) {
         await pair.tg.editMessages({
           message: message.tgMsgId,
           text: `<del>${message.tgMessageText}</del>\n<i>此消息已删除</i>`,

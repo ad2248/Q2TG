@@ -55,7 +55,7 @@ export default class {
       this.log.error('找不到 sourceMessage');
       return true;
     }
-    if (!((pair.flags | this.instance.flags) & flags.NO_QUOTE_PIN)) {
+    if (!((pair.flags | this.instance.flags) & flags.DISABLE_QUOTE_PIN)) {
       this.pinMessageOnBothSide(pair, sourceMessage).then();
     }
     // 异步发送，为了让 /q 先到达
@@ -90,7 +90,7 @@ export default class {
       this.log.error('找不到 sourceMessage');
       return true;
     }
-    if (!((pair.flags | this.instance.flags) & flags.NO_QUOTE_PIN)) {
+    if (!((pair.flags | this.instance.flags) & flags.DISABLE_QUOTE_PIN)) {
       this.pinMessageOnBothSide(pair, sourceMessage).then();
     }
     // 异步发送，为了让 /q 先到达
