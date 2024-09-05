@@ -6,8 +6,8 @@ settings:
 
 patchedDependencies:
   '@icqqjs/icqq@1.2.6':
-    hash: 7qywka3kux3y3rupypzdaqreia
-    path: patches/@icqqjs__icqq@1.2.5.patch
+    hash: npy6ps7lf72t73ul2qrxowfaaa
+    path: patches/@icqqjs__icqq@1.2.6.patch
   telegram@2.24.11:
     hash: zg4exvldyksr74crq2k5ydfp7u
     path: patches/telegram@2.24.11.patch
@@ -26,8 +26,8 @@ importers:
         specifier: ^0.6.4
         version: 0.6.4(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))
       '@icqqjs/icqq':
-        specifier: ^1.2.6
-        version: 1.2.6(patch_hash=7qywka3kux3y3rupypzdaqreia)
+        specifier: file:..\patches\icqqjs-icqq-1.2.6.tgz
+        version: file:patches/icqqjs-icqq-1.2.6.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)
       '@prisma/client':
         specifier: 5.19.0
         version: 5.19.0(prisma@5.19.0)
@@ -789,8 +789,9 @@ packages:
     resolution: {integrity: sha512-YbSDrSZGsiEOeJSJPjwXdO6jim0wBNh/WdOo/W3oXxQZjzPfZP2OL9Sv/8N3WS8FzKvUqdJ0Yzmgp/ZfnhUUoQ==, tarball: https://npm.pkg.github.com/download/@icqqjs/icqq/1.2.5/d342ea52d0376ae2ffd4025818ff99b4cf09c58a}
     engines: {node: '>= v14'}
 
-  '@icqqjs/icqq@1.2.6':
-    resolution: {integrity: sha512-yHLZtlltWsY5pf7CiObt0MEpxUwMm33FBzXzVQ7kxjEwcbzWnvd+K19u4GytR5WUS8JWdq962Aa6rK94fTb7wA==, tarball: https://npm.pkg.github.com/download/@icqqjs/icqq/1.2.6/77fd70837b67efe97c0a9a45cc941f1c50145b15}
+  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6.tgz':
+    resolution: {integrity: sha512-QtDYIPUXkan1WqnxdhM50GMBKOuxwSIvYdFSRDIo8zLLmhO+AAvy5yfjY4y0dFnHBLWOkcpI6hSsH3GJ9xGhDw==, tarball: file:patches/icqqjs-icqq-1.2.6.tgz}
+    version: 1.2.6
     engines: {node: '>= v14'}
 
   '@img/sharp-darwin-arm64@0.33.5':
@@ -4217,7 +4218,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@icqqjs/icqq@1.2.6(patch_hash=7qywka3kux3y3rupypzdaqreia)':
+  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)':
     dependencies:
       axios: 1.7.5
       log4js: 6.9.1

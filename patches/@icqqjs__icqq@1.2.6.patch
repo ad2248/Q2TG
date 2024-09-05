@@ -33,6 +33,32 @@ index 84a509ee996dbb17414c576b8c91d78405bf710c..65ac2496c52314758e1a700440935455
          signature: String(profile[102]),
          regTimestamp: profile[20026],
          QID: String(profile[27394])
+diff --git a/lib/internal/onlinepush.js b/lib/internal/onlinepush.js
+index fc3f4f64fe4240a94eb567352dc16417b8948719..d1120c2e823bb2b265d358e322442d8c1edc062c 100644
+--- a/lib/internal/onlinepush.js
++++ b/lib/internal/onlinepush.js
+@@ -423,7 +423,7 @@ function groupMsgListener(payload) {
+             return;
+         msg = message_1.GroupMessage.combine(arr);
+     }
+-    if (msg.raw_message) {
++    if (true) {
+         const group = this.pickGroup(msg.group_id);
+         const member = group.pickMember(msg.sender.user_id);
+         msg.group = group;
+diff --git a/lib/internal/pbgetmsg.js b/lib/internal/pbgetmsg.js
+index 1b86d3ddaf64399381eea20bc12218d6f141fc8b..b908b9b984032e0797cb9861cd0979cf66606ccd 100644
+--- a/lib/internal/pbgetmsg.js
++++ b/lib/internal/pbgetmsg.js
+@@ -116,7 +116,7 @@ async function handleSyncMsg(proto) {
+     else {
+         this.stat.recv_msg_cnt++;
+         const msg = new message_1.PrivateMessage(proto, this.uin);
+-        if (msg.raw_message) {
++        if (true) {
+             msg.friend = this.pickFriend(msg.from_id);
+             if (msg.sub_type === "friend")
+                 msg.sender.nickname = msg.friend.info?.nickname || this.sl.get(msg.from_id)?.nickname || "";
 diff --git a/lib/message/converter.js b/lib/message/converter.js
 index 27a659a3290fadd990a1a980918515a6ded4978f..e1bbe1470f302c30e7adea92f433a6e3929064e3 100644
 --- a/lib/message/converter.js
