@@ -7,6 +7,7 @@ import {
   Quotable,
   segment,
 } from '@icqqjs/icqq';
+import { Contactable } from '@icqqjs/icqq/lib/internal';
 import { fetchFile, getBigFaceUrl, getImageUrlByMd5, isContainsUrl } from '../utils/urls';
 import { ButtonLike, FileLike } from 'telegram/define';
 import { getLogger, Logger } from 'log4js';
@@ -348,7 +349,10 @@ export default class ForwardService {
           }
           case 'record': {
             url = elem.url;
-            if (!url && this.oicq instanceof OicqClient) {
+            if (!url && pair.qq instanceof Contactable && elem.md5 === 'ntptt') {
+              url = await pair.qq.getNtVoiceUrl(elem.file as Buffer);
+            }
+            else if (!url && this.oicq instanceof OicqClient) {
               const refetchMessage = await this.oicq.oicq.getMsg(event.messageId);
               url = (refetchMessage.message.find(it => it.type === 'record') as PttElem).url;
             }
@@ -438,6 +442,9 @@ export default class ForwardService {
         }
       }
       message = message.trim();
+      if (!event.message.length) {
+        message += '<i>[消息无法解析出内容]</i>';
+      }
 
       // 处理回复
       if (event.replyTo) {

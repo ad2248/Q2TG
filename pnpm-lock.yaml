@@ -26,8 +26,8 @@ importers:
         specifier: ^0.6.4
         version: 0.6.4(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))
       '@icqqjs/icqq':
-        specifier: file:..\patches\icqqjs-icqq-1.2.6.tgz
-        version: file:patches/icqqjs-icqq-1.2.6.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)
+        specifier: file:..\patches\icqqjs-icqq-1.2.6-r2.tgz
+        version: file:patches/icqqjs-icqq-1.2.6-r2.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)
       '@prisma/client':
         specifier: 5.19.0
         version: 5.19.0(prisma@5.19.0)
@@ -789,8 +789,8 @@ packages:
     resolution: {integrity: sha512-YbSDrSZGsiEOeJSJPjwXdO6jim0wBNh/WdOo/W3oXxQZjzPfZP2OL9Sv/8N3WS8FzKvUqdJ0Yzmgp/ZfnhUUoQ==, tarball: https://npm.pkg.github.com/download/@icqqjs/icqq/1.2.5/d342ea52d0376ae2ffd4025818ff99b4cf09c58a}
     engines: {node: '>= v14'}
 
-  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6.tgz':
-    resolution: {integrity: sha512-QtDYIPUXkan1WqnxdhM50GMBKOuxwSIvYdFSRDIo8zLLmhO+AAvy5yfjY4y0dFnHBLWOkcpI6hSsH3GJ9xGhDw==, tarball: file:patches/icqqjs-icqq-1.2.6.tgz}
+  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6-r2.tgz':
+    resolution: {integrity: sha512-UX4P7F3kHQMDXUC7p9wcvGKP6Iwqr6upLm6EF7dNUCUtexIB1h8sFoOx69tHGQFRuUQ15bUVXpu6oJffWui4MQ==, tarball: file:patches/icqqjs-icqq-1.2.6-r2.tgz}
     version: 1.2.6
     engines: {node: '>= v14'}
 
@@ -4218,7 +4218,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)':
+  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6-r2.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)':
     dependencies:
       axios: 1.7.5
       log4js: 6.9.1
