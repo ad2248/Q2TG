@@ -2,6 +2,7 @@ import { computed, defineComponent } from 'vue';
 import type BilibiliMiniApp from '../types/BilibiliMiniApp';
 import type StructMessageCard from '../types/StructMessageCard';
 import { NSpace } from 'naive-ui';
+import { useBrowserLocation } from '@vueuse/core';
 
 export default defineComponent({
   props: {
@@ -9,8 +10,18 @@ export default defineComponent({
   },
   setup(props) {
     const jsonObj = computed(() => JSON.parse(props.json));
+    const location = useBrowserLocation();
+
+    const openForward = (uuid: string) => {
+      const params = new URLSearchParams(location.value.search);
+      params.set('tgWebAppStartParam', uuid);
+      location.value.search = params.toString();
+    };
 
     return () => {
+      if (jsonObj.value.type === 'forward') {
+        return <div class="c-blue-5 cursor-pointer" onClick={() => openForward(jsonObj.value.uuid)}>[嵌套合并转发消息]</div>;
+      }
       if (jsonObj.value.app === 'com.tencent.mannounce') {
         try {
           const title = atob(jsonObj.value.meta.mannounce.title);

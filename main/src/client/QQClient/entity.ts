@@ -1,4 +1,4 @@
-import type { MessageRet, MfaceElem, Quotable } from '@icqqjs/icqq';
+import type { MessageElem, MessageRet, MfaceElem, Quotable } from '@icqqjs/icqq';
 import { Gender, GroupRole } from '@icqqjs/icqq/lib/common';
 import { AtElem, FaceElem, ImageElem, PttElem, TextElem, VideoElem } from '@icqqjs/icqq/lib/message/elements';
 
@@ -70,6 +70,6 @@ export interface ForwardMessage {
   group_id?: number;
   time: number;
   seq: number;
-  message: SendableElem[];
+  message: MessageElem[];
   raw_message: string;
 }

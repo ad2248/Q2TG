@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import db from '../../models/db';
 import { Pair } from '../../models/Pair';
 import OicqClient from '../../client/OicqClient';
+import processNestedForward from '../../utils/processNestedForward';
 
 const forwardCache = new Map<string, any>();
 
@@ -18,6 +19,7 @@ let app = new Elysia()
       if (pair.qqClient instanceof OicqClient) {
         await pair.qqClient.refreshImageRKey(messages);
       }
+      await processNestedForward(messages, data.fromPairId);
       forwardCache.set(uuid, messages);
 
       setTimeout(() => {
