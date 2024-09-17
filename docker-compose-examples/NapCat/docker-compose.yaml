@@ -32,6 +32,8 @@ services:
     environment:
       - ACCOUNT=要登录的 QQ 号
       - WS_ENABLE=true
+      - NAPCAT_GID=1000
+      - NAPCAT_UID=1000
     ports:
       - 6099:6099
     mac_address: 02:42:12:34:56:78 # 请修改为一个固定的 MAC 地址，但是不要和其他容器或你的主机重复

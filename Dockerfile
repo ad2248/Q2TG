@@ -5,7 +5,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloa
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   apt update && apt-get --no-install-recommends install -y \
-    fonts-wqy-microhei \
+    fonts-wqy-microhei gosu \
     libpixman-1-0 libcairo2 libpango1.0-0 libgif7 libjpeg62-turbo libpng16-16 librsvg2-2 libvips42 ffmpeg librlottie0-1
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -53,11 +53,10 @@ RUN cmake CMakeLists.txt && make
 FROM base AS build-front
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml /app/
 COPY patches /app/patches
-COPY ui/package.json /app/ui/
+COPY ui/ /app/ui/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store,sharing=locked \
     --mount=type=secret,id=npmrc,target=/root/.npmrc \
     pnpm install --frozen-lockfile
-COPY ui/ /app/ui/
 RUN cd ui && pnpm run build
 
 FROM base
@@ -71,6 +70,9 @@ RUN pnpm exec prisma generate
 COPY --from=build-front /app/ui/dist /app/front
 ENV UI_PATH=/app/front
 
+COPY docker-entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 ENV DATA_DIR=/app/data
 ENV CACHE_DIR=/app/.config/QQ/NapCat/temp
 
@@ -82,4 +84,4 @@ ENV REF $REF
 ENV COMMIT $COMMIT
 
 EXPOSE 8080
-CMD pnpm start
+CMD /app/entrypoint.sh
