@@ -83,6 +83,7 @@ model Message {
   nick           String? // /抱 的时候会用到
   tgSenderId     BigInt?  @db.BigInt
   richHeaderUsed Boolean  @default(false)
+  ignoreDelete   Boolean  @default(false) // rmq rmt
 
   @@index([qqRoomId, qqSenderId, seq, rand, pktnum, time, instanceId])
   @@index([tgChatId, tgMsgId, instanceId])

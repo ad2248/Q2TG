@@ -198,4 +198,57 @@ export default class InChatCommandsService {
       });
     }
   }
+
+  public async rmt(message: Api.Message, pair: Pair) {
+    if (!message.replyToMsgId) {
+      const reply = await message.reply({
+        message: '<i>请回复一条消息</i>',
+      });
+      setTimeout(() => {
+        reply.delete({ revoke: true });
+        message.delete({ revoke: true });
+      }, 5000);
+      return;
+    }
+    await db.message.updateMany({
+      where: {
+        tgChatId: pair.tgId,
+        tgMsgId: message.replyToMsgId,
+      },
+      data: {
+        ignoreDelete: true,
+      },
+    });
+    await message.delete({ revoke: true });
+    await pair.tg.deleteMessages([message.replyToMsgId]);
+  }
+
+  public async rmq(message: Api.Message, pair: Pair) {
+    if (!message.replyToMsgId) {
+      const reply = await message.reply({
+        message: '<i>请回复一条消息</i>',
+      });
+      setTimeout(() => {
+        reply.delete({ revoke: true });
+        message.delete({ revoke: true });
+      }, 5000);
+      return;
+    }
+    const dbEntry = await db.message.findFirst({
+      where: {
+        tgChatId: pair.tgId,
+        tgMsgId: message.replyToMsgId,
+      },
+    });
+    await db.message.update({
+      where: {
+        id: dbEntry.id,
+      },
+      data: {
+        ignoreDelete: true,
+      },
+    });
+    await message.delete({ revoke: true });
+    await pair.qq.recallMsg(dbEntry.seq, Number(dbEntry.rand), pair.qq.dm ? dbEntry.time : dbEntry.pktnum);
+  }
 }

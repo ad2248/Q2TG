@@ -102,6 +102,12 @@ export default class InChatCommandsController {
           message: '设置' + (result ? '成功' : '失败'),
         });
         return true;
+      case '/rmt':
+        await this.service.rmt(message, pair);
+        return true;
+      case '/rmq':
+        await this.service.rmq(message, pair);
+        return true;
     }
   };
 }

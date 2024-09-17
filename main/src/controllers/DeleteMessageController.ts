@@ -22,7 +22,7 @@ export default class DeleteMessageController {
   private onTelegramMessage = async (message: Api.Message) => {
     const pair = this.instance.forwardPairs.find(message.chat);
     if (!pair) return false;
-    if (message.message?.startsWith('/rm')) {
+    if (message.message?.split('@')?.[0] === '/rm') {
       // 撤回消息
       await this.deleteMessageService.handleTelegramMessageRm(message, pair);
       return true;

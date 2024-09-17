@@ -61,6 +61,18 @@ const inChatCommands = [
     command: 'q',
     description: '生成 QuotLy 图片',
   }),
+  new Api.BotCommand({
+    command: 'rm',
+    description: '在双端撤回被回复的消息',
+  }),
+  new Api.BotCommand({
+    command: 'rmt',
+    description: '在 TG 撤回被回复的消息',
+  }),
+  new Api.BotCommand({
+    command: 'rmq',
+    description: '在 QQ 撤回被回复的消息',
+  }),
 ];
 
 const groupInChatCommands = [

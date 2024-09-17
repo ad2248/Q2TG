@@ -70,6 +70,7 @@ export default class DeleteMessageService {
       if (messageInfo) {
         try {
           if (this.lock(`qq-${pair.qqRoomId}-${messageInfo.seq}`)) return;
+          if (messageInfo.ignoreDelete) return;
           const mapQq = pair.instanceMapForTg[messageInfo.tgSenderId.toString()];
           mapQq && this.recallQqMessage(mapQq, messageInfo.seq, Number(messageInfo.rand), messageInfo.pktnum, pair, false, true);
           // 假如 mapQQ 是普通成员，机器人是管理员，上面撤回失败了也可以由机器人撤回
@@ -78,9 +79,7 @@ export default class DeleteMessageService {
           this.recallQqMessage(pair.qq, messageInfo.seq, Number(messageInfo.rand),
             pair.qq.dm ? messageInfo.time : messageInfo.pktnum,
             pair, isOthersMsg, !!mapQq);
-          await db.message.delete({
-            where: { id: messageInfo.id },
-          });
+          // 有 lock 了，这里不需要删除数据库了
         }
         catch (e) {
           this.log.error(e);
@@ -164,6 +163,7 @@ export default class DeleteMessageService {
       });
       if (!message) return;
       if (this.lock(`tg-${pair.tgId}-${message.tgMsgId}`)) return;
+      if (message.ignoreDelete) return;
       if ((pair.flags | this.instance.flags) & flags.DISABLE_DELETE_MESSAGE) {
         await pair.tg.editMessages({
           message: message.tgMsgId,
@@ -173,9 +173,7 @@ export default class DeleteMessageService {
       }
       else {
         await pair.tg.deleteMessages(message.tgMsgId);
-        await db.message.delete({
-          where: { id: message.id },
-        });
+        // 有 lock 了，这里不需要删除数据库了
       }
     }
     catch (e) {

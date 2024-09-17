@@ -14,7 +14,7 @@ export interface QQEntity {
 
   getVideoUrl(fid: string, md5: string | Buffer): Promise<string>;
 
-  recallMsg(paramOrMessageId: number, rand?: number, timeOrPktNum?: number): Promise<boolean>;
+  recallMsg(seqOrMessageId: number, rand?: number, timeOrPktNum?: number): Promise<boolean>;
 
   sendMsg(content: Sendable, source?: Quotable): Promise<MessageRet>;
 
