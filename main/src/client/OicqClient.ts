@@ -400,6 +400,7 @@ export default class OicqClient extends QQClient {
     const rKey = await this.getNTPicRKey();
     if (!rKey) {
       this.log.warn('未获取到 QQNT Rkey，无法刷新图片 rkey');
+      return;
     }
     for (const message of messages) {
       for (const element of message.message) {
