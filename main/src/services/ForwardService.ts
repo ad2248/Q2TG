@@ -78,7 +78,12 @@ export default class ForwardService {
         });
       });
     }
-    this.initStickerPack().then(() => this.log.info('Sticker Pack 初始化完成'));
+    this.initStickerPack()
+      .then(() => this.log.info('Sticker Pack 初始化完成'))
+      .catch(e => {
+        posthog.capture('Sticker Pack 初始化失败', { error: e });
+        this.log.warn('Sticker Pack 初始化失败', e);
+      });
   }
 
   private readonly stickerPackMap: Record<keyof typeof lottie.packInfo, Api.Document[]> = {} as any;
@@ -189,7 +194,18 @@ export default class ForwardService {
           message = '[<i>转发多条消息（未配置）</i>]';
         }
       };
-      messageElemLoop: for (let elem of event.message) {
+      // filter chain
+      const chain = event.message
+        // 我们不要这些东西
+        // 对机器人的 at 和回复的 at
+        // 对机器人的 at 已经在 atMe 里面处理了
+        .filter(elem => !(elem.type === 'at' && elem.qq === this.oicq.uin))
+        // 对回复的消息的发送者的 at 纯属多余，腾讯生成这个 at 就是脑子有毛病
+        .filter(elem => !(elem.type === 'at' && elem.qq === event.replyTo?.fromId))
+        // 防止出现 [/狼狗]/狼狗 这个情况，不知道后面那个 text 是怎么来的
+        .filter(elem => !(elem.type === 'text' && event.message.some(it => it.type === 'face' && it.text === elem.text)))
+      ;
+      messageElemLoop: for (let elem of chain) {
         if (elem.type === 'flash' && (pair.flags | this.instance.flags) & flags.DISABLE_FLASH_PIC) {
           message += '<i>[闪照]</i>';
           elem = {
@@ -214,8 +230,6 @@ export default class ForwardService {
             break;
           }
           case 'at': {
-            if (event.replyTo?.fromId === elem.qq || event.replyTo?.fromId === this.oicq.uin)
-              break;
             if (!elem.text) {
               if (isNaN(elem.qq as number)) {
                 elem.text = `@${elem.qq === 'all' ? '全体成员' : elem.qq}`;
@@ -432,9 +446,6 @@ export default class ForwardService {
             break;
           case 'poke':
             message = `[<i>戳一戳</i>] ${helper.htmlEscape(elem.text)}`;
-            break;
-          case 'location':
-            message = `[<i>位置</i>] ${helper.htmlEscape(elem.name)}\n${helper.htmlEscape(elem.address)}`;
             break;
           case 'forward':
             await useForward(elem.id, '', elem.content);
