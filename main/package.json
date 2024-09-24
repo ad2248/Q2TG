@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@bogeychan/elysia-polyfills": "^0.6.4",
-    "@icqqjs/icqq": "file:..\\patches\\icqqjs-icqq-1.2.6-r2.tgz",
+    "@icqqjs/icqq": "1.3.0",
     "@prisma/client": "5.19.0",
     "dockerode": "^4.0.2",
     "prisma": "5.19.0",

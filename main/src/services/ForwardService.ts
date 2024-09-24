@@ -605,6 +605,7 @@ export default class ForwardService {
           event,
           messageToSend,
         }));
+        pbUrl += '.json';
       }
       catch (e) {
         this.log.error('上传到 Pastebin 失败', e);

@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@icqqjs/icqq@1.2.6':
+  '@icqqjs/icqq@1.3.0':
     hash: npy6ps7lf72t73ul2qrxowfaaa
     path: patches/@icqqjs__icqq@1.2.6.patch
   telegram@2.24.11:
@@ -26,8 +26,8 @@ importers:
         specifier: ^0.6.4
         version: 0.6.4(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))
       '@icqqjs/icqq':
-        specifier: file:..\patches\icqqjs-icqq-1.2.6-r2.tgz
-        version: file:patches/icqqjs-icqq-1.2.6-r2.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)
+        specifier: 1.3.0
+        version: 1.3.0(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)(bufferutil@4.0.8)(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))(utf-8-validate@5.0.10)
       '@prisma/client':
         specifier: 5.19.0
         version: 5.19.0(prisma@5.19.0)
@@ -789,9 +789,8 @@ packages:
     resolution: {integrity: sha512-YbSDrSZGsiEOeJSJPjwXdO6jim0wBNh/WdOo/W3oXxQZjzPfZP2OL9Sv/8N3WS8FzKvUqdJ0Yzmgp/ZfnhUUoQ==, tarball: https://npm.pkg.github.com/download/@icqqjs/icqq/1.2.5/d342ea52d0376ae2ffd4025818ff99b4cf09c58a}
     engines: {node: '>= v14'}
 
-  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6-r2.tgz':
-    resolution: {integrity: sha512-UX4P7F3kHQMDXUC7p9wcvGKP6Iwqr6upLm6EF7dNUCUtexIB1h8sFoOx69tHGQFRuUQ15bUVXpu6oJffWui4MQ==, tarball: file:patches/icqqjs-icqq-1.2.6-r2.tgz}
-    version: 1.2.6
+  '@icqqjs/icqq@1.3.0':
+    resolution: {integrity: sha512-bEsluaNG8iJa7ZmIoClF81nF/qKGr5aoQMmAbVpha9uHowZr7osraPwC7v7LMKjqMMLe+VqSmt9+KcvmsFou3A==, tarball: https://npm.pkg.github.com/download/@icqqjs/icqq/1.3.0/77e853c9fd4cf386345aefca767566a2a4b74e10}
     engines: {node: '>= v14'}
 
   '@img/sharp-darwin-arm64@0.33.5':
@@ -2945,6 +2944,11 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  q2tg-main@file:main:
+    resolution: {directory: main, type: directory}
+    engines: {node: '>=22.0.0'}
+    hasBin: true
+
   qs@6.12.1:
     resolution: {integrity: sha512-zWmv4RSuB9r2mYQw3zxQuHWeU+42aKi1wWig/j4ele4ygELZ7PEO6MM7rim9oAQH2A5MWfsAVf/jPvTPgCbvUQ==}
     engines: {node: '>=0.6'}
@@ -4218,8 +4222,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@icqqjs/icqq@file:patches/icqqjs-icqq-1.2.6-r2.tgz(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)':
+  '@icqqjs/icqq@1.3.0(patch_hash=npy6ps7lf72t73ul2qrxowfaaa)(bufferutil@4.0.8)(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))(utf-8-validate@5.0.10)':
     dependencies:
+      '@icqqjs/icqq': q2tg-main@file:main(bufferutil@4.0.8)(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))(utf-8-validate@5.0.10)
       axios: 1.7.5
       log4js: 6.9.1
       long: 5.2.3
@@ -4228,8 +4233,12 @@ snapshots:
       silk-wasm: 3.6.1
       triptrap: 0.0.17
     transitivePeerDependencies:
+      - bufferutil
       - debug
+      - elysia
+      - encoding
       - supports-color
+      - utf-8-validate
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
@@ -6514,6 +6523,22 @@ snapshots:
       once: 1.4.0
 
   punycode@2.3.1: {}
+
+  q2tg-main@file:main(bufferutil@4.0.8)(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))(utf-8-validate@5.0.10):
+    dependencies:
+      '@bogeychan/elysia-polyfills': 0.6.4(elysia@1.1.9(@sinclair/typebox@0.33.7)(typescript@5.5.4))
+      '@prisma/client': 5.19.0(prisma@5.19.0)
+      dockerode: 4.0.2
+      prisma: 5.19.0
+      quote-api: https://github.com/Clansty/quote-api/archive/014b21138afbbe0e12c91b00561414b1e851fc0f.tar.gz(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      sharp: 0.33.5
+      silk-sdk: 0.2.2
+    transitivePeerDependencies:
+      - bufferutil
+      - elysia
+      - encoding
+      - supports-color
+      - utf-8-validate
 
   qs@6.12.1:
     dependencies:
