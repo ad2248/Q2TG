@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   apt update && apt-get --no-install-recommends install -y \
     python3 build-essential pkg-config \
     libpixman-1-dev libcairo2-dev libpango1.0-dev libgif-dev libjpeg62-turbo-dev libpng-dev librsvg2-dev libvips-dev
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml /app/
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml .npmrc /app/
 COPY patches /app/patches
 COPY main/package.json /app/main/
 
