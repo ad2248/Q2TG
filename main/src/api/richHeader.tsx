@@ -181,7 +181,7 @@ export default new Elysia()
           </div>
           <div class="detailItem">
             <div class="secondary">注册时间</div>
-            {format(new Date(profile.regTimestamp * 1000), 'yyyy-MM-dd HH:mm')}
+            {format(new Date(), 'yyyy-MM-dd HH:mm')}
           </div>
         </div>
       </div>
